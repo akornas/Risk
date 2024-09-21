@@ -20,6 +20,9 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 	[Inject]
 	private readonly Factory<TakingOverPhase> _takingOverPhaseFactory;
 
+	[Inject]
+	private readonly ILogProvider _logProvider;
+
 	[SerializeField]
 	private GameplayData _gameplayData;
 
@@ -69,7 +72,6 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 		{
 			HandleChangingRound();
 		}
-
 		_ = _saveController.SaveData(_gameplayData);
 	}
 

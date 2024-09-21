@@ -38,7 +38,6 @@ public class TakingOverController : ITakingOverController
 		}
 	}
 
-
 	private void HandleIsEnabled()
 	{
 		if (IsEnabled)
@@ -136,8 +135,6 @@ public class TakingOverController : ITakingOverController
 
 	public void Attack()
 	{
-		//TODO move to WinLoseProvider
-
 		_tilesAttacked++;
 		_winLoseProvider.HandleAttack();
 		CleanUpAfterAttack();

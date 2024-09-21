@@ -9,10 +9,15 @@ public class GameplaySystemsInstaller : MonoInstaller
 	[SerializeField]
 	private MapController _mapController;
 
+	[SerializeField]
+	private LogProvider _logProvider;
+
 	public override void InstallBindings()
 	{
 		Container.Bind<IGameplayManager>().FromComponentInNewPrefab(_gameplayController).AsSingle();
+
 		Container.Bind<IMapController>().FromComponentInHierarchy(_mapController).AsSingle();
+		Container.Bind<ILogProvider>().FromComponentInHierarchy(_logProvider).AsSingle();
 
 		Container.Bind<ITokensController>().To<TokensController>().AsSingle();
 		Container.Bind<ITakingOverController>().To<TakingOverController>().AsSingle();

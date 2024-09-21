@@ -38,7 +38,7 @@ public class WinLoseProvider : IWinLoseProvider
 			}
 		}
 
-		if (winCounter > MathF.Ceiling(dicesCount / 2))
+		if (winCounter > MathF.Ceiling(dicesCount / 2f))
 		{
 			HandleWin();
 		}
@@ -61,12 +61,15 @@ public class WinLoseProvider : IWinLoseProvider
 
 	private void HandleLose()
 	{
-		var tokensOnAttackerTile = (int)MathF.Ceiling(_attackerTile.Tokens / 2);
+		var tokensOnAttackerTile = (int)MathF.Ceiling(_attackerTile.Tokens / 2f);
 		var tokensOnDefenderTile = _defenderTile.Tokens;
 
 		_attackerTile.Tokens = tokensOnAttackerTile;
 		_defenderTile.Tokens = tokensOnDefenderTile;
-		_attackerTile.OwnerPlayerIndex = _defenderTile.OwnerPlayerIndex;
-	}
 
+		if (_defenderTile.OwnerPlayerIndex != -1)
+		{
+			_attackerTile.OwnerPlayerIndex = _defenderTile.OwnerPlayerIndex;
+		}
+	}
 }
