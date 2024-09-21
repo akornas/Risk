@@ -117,7 +117,6 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 	{
 		if (CurrentPhase.CanBeEnded)
 		{
-			//TODO Change for phase queue
 			SetPhase(_takingOverPhaseFactory.Create());
 		}
 	}

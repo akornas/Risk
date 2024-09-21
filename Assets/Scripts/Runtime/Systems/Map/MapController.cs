@@ -11,6 +11,8 @@ public class MapController : MonoBehaviour, IMapController
 
 	private readonly List<MapTile> _tiles = new();
 
+	public List<MapTile> Tiles => _tiles;
+
 	[Inject]
 	public void Initialize()
 	{

@@ -11,6 +11,11 @@ public class MapTileData
 	[SerializeField]
 	private int _tokens = 0;
 
+	[SerializeField]
+	private string _guid = System.Guid.NewGuid().ToString();
+
+	public string Guid => _guid;
+
 	public int OwnerPlayerIndex
 	{
 		get => _ownerPlayerIndex;

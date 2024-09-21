@@ -2476,7 +2476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1882124393037502115, guid: 2abd523228d2ce9448382255c6559eb2, type: 3}
       propertyPath: m_text
-      value: Dice Type
+      value: Dice Count
       objectReference: {fileID: 0}
     - target: {fileID: 5334358155220427142, guid: 2abd523228d2ce9448382255c6559eb2, type: 3}
       propertyPath: m_Name
