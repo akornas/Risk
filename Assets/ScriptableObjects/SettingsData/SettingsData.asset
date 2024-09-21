@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1b84f1c9c6c5694f92f427e1603aafd, type: 3}
+  m_Name: SettingsData
+  m_EditorClassIdentifier: 
+  _player1Color: {r: 1, g: 0.8929987, b: 0, a: 1}
+  _player2Color: {r: 1, g: 0.110836454, b: 0, a: 1}
+  _player3Color: {r: 0, g: 0.116532326, b: 1, a: 1}
+  _player4Color: {r: 0.22970808, g: 0.5471698, b: 0.5035966, a: 1}

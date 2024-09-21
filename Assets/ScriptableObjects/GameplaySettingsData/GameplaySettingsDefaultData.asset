@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f1615d2fa415a4c911e2c5e092384c, type: 3}
+  m_Name: GameplaySettingsDefaultData
+  m_EditorClassIdentifier: 
+  _minimalRange:
+    _players: 2
+    _rounds: -1
+    _tokens: 1
+    _dices: 2
+  _maximalRange:
+    _players: 4
+    _rounds: 100
+    _tokens: 100
+    _dices: 20
+  _defaultValue:
+    _players: 2
+    _rounds: 40
+    _tokens: 10
+    _dices: 2

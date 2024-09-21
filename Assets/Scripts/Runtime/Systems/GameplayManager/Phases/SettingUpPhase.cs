@@ -1,0 +1,33 @@
+using UnityEngine;
+using Zenject;
+
+public class SettingUpPhase : AbstractPhase
+{
+	[Inject]
+	private readonly IGameplayManager _gameplayManager;
+
+	[Inject]
+	private readonly ITokensController _tokensController;
+
+	public override int TilesLimit => 2;
+	public override int Tokens => _gameplayManager.GameplayData.GameplaySettingsData.Tokens;
+	public override bool CanEndTurn => _tokensController.Tokens == 0;
+	public override bool CanBeEnded => true;
+
+	[Inject]
+	public void Initialize()
+	{
+		_tokensController.IsEnabled = true;
+	}
+
+	public override void NotifyWhyCanNotEndTurn()
+	{
+		Debug.Log("You have to lay out all the tokens");
+	}
+
+	public override void CleanUp()
+	{
+		_tokensController.IsEnabled = false;
+	}
+}
+
