@@ -1,4 +1,4 @@
 ﻿internal interface ILogProvider
 {
-	void ShowMessage(string message);
+	void Log(string message);
 }

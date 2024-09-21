@@ -6,6 +6,9 @@ public class WinLoseProvider : IWinLoseProvider
 	[Inject]
 	private readonly IGameplayManager _gameplayManager;
 
+	[Inject]
+	private readonly ILogProvider _logProvider;
+
 	private MapTileData _attackerTile;
 	private MapTileData _defenderTile;
 
@@ -26,6 +29,9 @@ public class WinLoseProvider : IWinLoseProvider
 
 	public void HandleAttack()
 	{
+		var winChance = GetWinChance();
+		_logProvider.Log($"Player {_attackerTile.OwnerPlayerIndex} attacked Player {_defenderTile.OwnerPlayerIndex} with {winChance}% win chance");
+
 		var dicesCount = _gameplayManager.GameplayData.GameplaySettingsData.Dices;
 		int winCounter = 0;
 

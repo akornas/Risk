@@ -42,7 +42,7 @@ public class LogProvider : MonoBehaviour, ILogProvider
 		_messagePool.Push(createdLogUi);
 	}
 
-	public void ShowMessage(string message)
+	public void Log(string message)
 	{
 		var logUiFromPool = GetLogUiFromPool();
 
