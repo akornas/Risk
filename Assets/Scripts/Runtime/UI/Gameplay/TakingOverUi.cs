@@ -42,18 +42,18 @@ public class TakingOverUi : MonoBehaviour
 		_root.SetActive(true);
 	}
 
-	private void OnSelectedAttackerTile(MapTileData tileData)
+	private void OnSelectedAttackerTile(MapTile tile)
 	{
 		_attackerSlot.Container.SetActive(true);
-		_attackerSlot.TokensLabel.text = $"{tileData.Tokens}";
-		_attackerSlot.Flag.color = _settingsController.GetColorForPlayer(tileData.OwnerPlayerIndex);
+		_attackerSlot.TokensLabel.text = $"{tile.Data.Tokens}";
+		_attackerSlot.Flag.color = _settingsController.GetColorForPlayer(tile.Data.OwnerPlayerIndex);
 	}
 
-	private void OnSelectedDefenderTile(MapTileData tileData)
+	private void OnSelectedDefenderTile(MapTile tile)
 	{
 		_defenderSlot.Container.SetActive(true);
-		_defenderSlot.TokensLabel.text = $"{tileData.Tokens}";
-		_defenderSlot.Flag.color = _settingsController.GetColorForPlayer(tileData.OwnerPlayerIndex);
+		_defenderSlot.TokensLabel.text = $"{tile.Data.Tokens}";
+		_defenderSlot.Flag.color = _settingsController.GetColorForPlayer(tile.Data.OwnerPlayerIndex);
 
 		_attackButton.SetActive(true);
 	}

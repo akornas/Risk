@@ -41,4 +41,10 @@ public class MapTileData
 			}
 		}
 	}
+
+	public void SetData(MapTileData _otherData)
+	{
+		OwnerPlayerIndex = _otherData.OwnerPlayerIndex;
+		Tokens = _otherData.Tokens;
+	}
 }

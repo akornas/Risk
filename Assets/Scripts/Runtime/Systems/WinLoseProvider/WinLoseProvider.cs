@@ -9,14 +9,14 @@ public class WinLoseProvider : IWinLoseProvider
 	[Inject]
 	private readonly ILogProvider _logProvider;
 
-	private MapTileData _attackerTile;
-	private MapTileData _defenderTile;
+	private MapTile _attackerTile;
+	private MapTile _defenderTile;
 
-	private int AttackerTokens => _attackerTile.Tokens;
-	private int DefenderTokens => _defenderTile.Tokens;
+	private int AttackerTokens => _attackerTile.Data.Tokens;
+	private int DefenderTokens => _defenderTile.Data.Tokens;
 
 
-	public void Initialize(MapTileData attackerTile, MapTileData defenderTile)
+	public void Initialize(MapTile attackerTile, MapTile defenderTile)
 	{
 		_attackerTile = attackerTile;
 		_defenderTile = defenderTile;
@@ -30,7 +30,7 @@ public class WinLoseProvider : IWinLoseProvider
 	public void HandleAttack()
 	{
 		var winChance = GetWinChance();
-		_logProvider.Log($"Player {_attackerTile.OwnerPlayerIndex} attacked Player {_defenderTile.OwnerPlayerIndex} with {winChance}% win chance");
+		_logProvider.Log($"Player {_attackerTile.Data.OwnerPlayerIndex} attacked Player {_defenderTile.Data.OwnerPlayerIndex} with {winChance}% win chance");
 
 		var dicesCount = _gameplayManager.GameplayData.GameplaySettingsData.Dices;
 		int winCounter = 0;
@@ -58,24 +58,24 @@ public class WinLoseProvider : IWinLoseProvider
 	private void HandleWin()
 	{
 		var tokensOnAttackerTile = 1;
-		var tokensOnDefenderTile = _attackerTile.Tokens + _defenderTile.Tokens - 1;
+		var tokensOnDefenderTile = _attackerTile.Data.Tokens + _defenderTile.Data.Tokens - 1;
 
-		_attackerTile.Tokens = tokensOnAttackerTile;
-		_defenderTile.Tokens = tokensOnDefenderTile;
-		_defenderTile.OwnerPlayerIndex = _attackerTile.OwnerPlayerIndex;
+		_attackerTile.Data.Tokens = tokensOnAttackerTile;
+		_defenderTile.Data.Tokens = tokensOnDefenderTile;
+		_defenderTile.Data.OwnerPlayerIndex = _attackerTile.Data.OwnerPlayerIndex;
 	}
 
 	private void HandleLose()
 	{
-		var tokensOnAttackerTile = (int)MathF.Ceiling(_attackerTile.Tokens / 2f);
-		var tokensOnDefenderTile = _defenderTile.Tokens;
+		var tokensOnAttackerTile = (int)MathF.Ceiling(_attackerTile.Data.Tokens / 2f);
+		var tokensOnDefenderTile = _defenderTile.Data.Tokens;
 
-		_attackerTile.Tokens = tokensOnAttackerTile;
-		_defenderTile.Tokens = tokensOnDefenderTile;
+		_attackerTile.Data.Tokens = tokensOnAttackerTile;
+		_defenderTile.Data.Tokens = tokensOnDefenderTile;
 
-		if (_defenderTile.OwnerPlayerIndex != -1)
+		if (_defenderTile.Data.OwnerPlayerIndex != -1)
 		{
-			_attackerTile.OwnerPlayerIndex = _defenderTile.OwnerPlayerIndex;
+			_attackerTile.Data.OwnerPlayerIndex = _defenderTile.Data.OwnerPlayerIndex;
 		}
 	}
 }

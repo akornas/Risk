@@ -10,6 +10,9 @@ public class TokensController : ITokensController
 	[Inject]
 	private readonly IMapController _mapController;
 
+	[Inject]
+	private readonly ILogProvider _logProvider;
+
 	private int _takenTiles = 0;
 	private bool _isEnabled;
 
@@ -68,22 +71,27 @@ public class TokensController : ITokensController
 		OnRefreshTokensEvent?.Invoke();
 	}
 
-	private void OnTileClicked(MapTileData tileData)
+	private void OnTileClicked(MapTile tile)
 	{
 		if (Tokens == 0)
 		{
+			_logProvider.Log("You dont have any token");
 			return;
 		}
 
-		if (tileData.OwnerPlayerIndex == -1 && CanTakeTile())
+		if (tile.Data.OwnerPlayerIndex == -1 && CanTakeTile())
 		{
 			_takenTiles++;
 
-			PutTokenOnBoard(tileData);
+			PutTokenOnBoard(tile.Data);
 		}
-		else if (tileData.OwnerPlayerIndex == _gameplayManager.CurrentPlayerIndex)
+		else if (tile.Data.OwnerPlayerIndex == _gameplayManager.CurrentPlayerIndex)
 		{
-			PutTokenOnBoard(tileData);
+			PutTokenOnBoard(tile.Data);
+		}
+		else
+		{
+			_logProvider.Log($"You can take only {_gameplayManager.CurrentPhase.TilesLimit} fields in this phase.");
 		}
 	}
 

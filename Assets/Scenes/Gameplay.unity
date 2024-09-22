@@ -7043,9 +7043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb7c66e1cc6ccac4cb5e6c8c49430c4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameplayController: {fileID: 2292648719267165171, guid: 4952641e60705fc40a8ebd5c63988943, type: 3}
-  _mapController: {fileID: 994457732}
-  _logProvider: {fileID: 754937797}
+  _gameplayManager: {fileID: 2292648719267165171, guid: 4952641e60705fc40a8ebd5c63988943, type: 3}
 --- !u!1 &1160302666
 GameObject:
   m_ObjectHideFlags: 0
@@ -8864,7 +8862,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1418453869
 RectTransform:
   m_ObjectHideFlags: 0

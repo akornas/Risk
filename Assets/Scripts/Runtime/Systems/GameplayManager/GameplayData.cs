@@ -17,7 +17,7 @@ public class GameplayData
 	private int _currentTokens;
 
 	[SerializeField]
-	private List<PlayerData> _playerDatas;
+	private List<MapTileData> _tilesDatas = new();
 
 	public int CurrentRound
 	{
@@ -43,6 +43,15 @@ public class GameplayData
 		set
 		{
 			_currentTokens = value;
+		}
+	}
+
+	public List<MapTileData> TileDatas
+	{
+		get => _tilesDatas;
+		set
+		{
+			_tilesDatas = value;
 		}
 	}
 

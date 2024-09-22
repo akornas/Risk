@@ -18,7 +18,7 @@ public class SettingsController : MonoBehaviour, ISettingsController
 			1 => SettingsData.Player2Color,
 			2 => SettingsData.Player3Color,
 			3 => SettingsData.Player4Color,
-			_ => Color.black,
+			_ => Color.white,
 		};
 	}
 }

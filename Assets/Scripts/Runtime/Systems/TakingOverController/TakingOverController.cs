@@ -3,8 +3,8 @@ using Zenject;
 
 public class TakingOverController : ITakingOverController
 {
-	public event Action<MapTileData> OnSelectedAttackerTileEvent;
-	public event Action<MapTileData> OnSelectedDefenderTileEvent;
+	public event Action<MapTile> OnSelectedAttackerTileEvent;
+	public event Action<MapTile> OnSelectedDefenderTileEvent;
 	public event Action OnInitializedEvent;
 	public event Action OnRefreshEvent;
 	public event Action OnAfterAttackEvent;
@@ -18,12 +18,15 @@ public class TakingOverController : ITakingOverController
 	[Inject]
 	private readonly IWinLoseProvider _winLoseProvider;
 
+	[Inject]
+	private readonly ILogProvider _logProvider;
+
 	private bool _isEnabled;
 	private float _percentageChance;
 	private int _tilesAttacked = 0;
 
-	private MapTileData _selectedAttackerTile;
-	private MapTileData _selectedDefenderTile;
+	private MapTile _selectedAttackerTile;
+	private MapTile _selectedDefenderTile;
 
 	public float PercentageChance => _percentageChance;
 	public bool IsAfterAttack { get; private set; }
@@ -62,7 +65,7 @@ public class TakingOverController : ITakingOverController
 		_gameplayManager.OnPlayerChangedEvent += OnPlayerChanged;
 	}
 
-	private void OnTileClicked(MapTileData tileData)
+	private void OnTileClicked(MapTile tile)
 	{
 		if (!CanAttack())
 		{
@@ -71,11 +74,11 @@ public class TakingOverController : ITakingOverController
 
 		if (_selectedAttackerTile == null)
 		{
-			HandleSelectingAttackerTile(tileData);
+			HandleSelectingAttackerTile(tile);
 		}
 		else if (_selectedDefenderTile == null)
 		{
-			HandleSelectingDefenderrTile(tileData);
+			HandleSelectingDefenderrTile(tile);
 		}
 
 		CalculatePercentage();
@@ -86,22 +89,26 @@ public class TakingOverController : ITakingOverController
 		return _tilesAttacked < _gameplayManager.CurrentPhase.TilesLimit;
 	}
 
-	private void HandleSelectingAttackerTile(MapTileData tileData)
+	private void HandleSelectingAttackerTile(MapTile tile)
 	{
-		if (tileData.OwnerPlayerIndex == _gameplayManager.CurrentPlayerIndex)
+		if (tile.Data.OwnerPlayerIndex == _gameplayManager.CurrentPlayerIndex)
 		{
-			_selectedAttackerTile = tileData;
+			_selectedAttackerTile = tile;
 			OnSelectedAttackerTileEvent?.Invoke(_selectedAttackerTile);
 		}
 	}
 
-	private void HandleSelectingDefenderrTile(MapTileData tileData)
+	private void HandleSelectingDefenderrTile(MapTile tile)
 	{
-		if (tileData.OwnerPlayerIndex != _gameplayManager.CurrentPlayerIndex)
+		if (tile.Data.OwnerPlayerIndex != _gameplayManager.CurrentPlayerIndex && _selectedAttackerTile.IsTileInNeighbour(tile))
 		{
-			_selectedDefenderTile = tileData;
+			_selectedDefenderTile = tile;
 			_winLoseProvider.Initialize(_selectedAttackerTile, _selectedDefenderTile);
 			OnSelectedDefenderTileEvent?.Invoke(_selectedDefenderTile);
+		}
+		else
+		{
+			_logProvider.Log("You cannot attack that tile");
 		}
 	}
 

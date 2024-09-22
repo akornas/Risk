@@ -1,6 +1,6 @@
 ﻿public interface IWinLoseProvider
 {
-	void Initialize(MapTileData attackerTile, MapTileData defenderTile);
+	void Initialize(MapTile attackerTile, MapTile defenderTile);
 	float GetWinChance();
 	void HandleAttack();
 }

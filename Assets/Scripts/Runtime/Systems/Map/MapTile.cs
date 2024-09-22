@@ -6,9 +6,9 @@ using Zenject;
 
 public class MapTile : MonoBehaviour
 {
-	public event System.Action<MapTileData> OnSelectedEvent;
-	public event System.Action<MapTileData> OnDeselectedEvent;
-	public event System.Action<MapTileData> OnClickEvent;
+	public event System.Action<MapTile> OnSelectedEvent;
+	public event System.Action<MapTile> OnDeselectedEvent;
+	public event System.Action<MapTile> OnClickEvent;
 
 	[Inject]
 	private readonly ISettingsController _settingsController;
@@ -80,21 +80,26 @@ public class MapTile : MonoBehaviour
 
 	public void Select()
 	{
-		OnSelectedEvent?.Invoke(Data);
+		OnSelectedEvent?.Invoke(this);
 	}
 
 	public void Deselect()
 	{
-		OnDeselectedEvent?.Invoke(Data);
+		OnDeselectedEvent?.Invoke(this);
 	}
 
 	public void Click()
 	{
-		OnClickEvent?.Invoke(Data);
+		OnClickEvent?.Invoke(this);
 	}
 
 	private void OnDestroy()
 	{
 		Data.OnDataChangedEvent -= OnDataChanged;
+	}
+
+	public bool IsTileInNeighbour(MapTile otherTile)
+	{
+		return _neighbourTiles.Contains(otherTile);
 	}
 }

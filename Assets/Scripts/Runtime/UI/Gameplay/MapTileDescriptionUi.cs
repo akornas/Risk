@@ -26,7 +26,7 @@ public class MapTileDescriptionUi : MonoBehaviour
 	[SerializeField]
 	private Image _flagImage;
 
-	private MapTileData _lastSelectedData;
+	private MapTile _lastSelectedTile;
 
 	[Inject]
 	public void Initialize()
@@ -38,26 +38,26 @@ public class MapTileDescriptionUi : MonoBehaviour
 
 	private void OnRefreshTokens()
 	{
-		if (_lastSelectedData != null)
+		if (_lastSelectedTile != null)
 		{
-			OnTileSelected(_lastSelectedData);
+			OnTileSelected(_lastSelectedTile);
 		}
 	}
 
-	private void OnTileSelected(MapTileData data)
+	private void OnTileSelected(MapTile tile)
 	{
-		_lastSelectedData = data;
+		_lastSelectedTile = tile;
 
-		if (data.OwnerPlayerIndex != -1)
+		if (tile.Data.OwnerPlayerIndex != -1)
 		{
 			_root.SetActive(true);
-			_playerLabel.text = $"{SettingsController.PLAYER_LABEL} {data.OwnerPlayerIndex + 1}";
-			_tokensLabel.text = $"{data.Tokens}";
-			_flagImage.color = _settingsController.GetColorForPlayer(data.OwnerPlayerIndex);
+			_playerLabel.text = $"{SettingsController.PLAYER_LABEL} {tile.Data.OwnerPlayerIndex + 1}";
+			_tokensLabel.text = $"{tile.Data.Tokens}";
+			_flagImage.color = _settingsController.GetColorForPlayer(tile.Data.OwnerPlayerIndex);
 		}
 	}
 
-	private void OnTileDeselected(MapTileData data)
+	private void OnTileDeselected(MapTile tile)
 	{
 		if (_root.activeInHierarchy)
 		{

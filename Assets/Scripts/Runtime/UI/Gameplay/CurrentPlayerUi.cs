@@ -21,8 +21,14 @@ public class CurrentPlayerUi : MonoBehaviour
 	{
 		_gameplayController.OnPlayerChangedEvent += OnPlayerChanged;
 		_tokensController.OnRefreshTokensEvent += OnRefreshTokens;
+		_gameplayController.OnPhaseChangedEvent += OnPhaseChanged;
 		OnPlayerChanged();
 		OnRefreshTokens();
+	}
+
+	private void OnPhaseChanged()
+	{
+		_tokensLabel.gameObject.SetActive(false);
 	}
 
 	private void OnRefreshTokens()
@@ -39,5 +45,6 @@ public class CurrentPlayerUi : MonoBehaviour
 	{
 		_gameplayController.OnPlayerChangedEvent -= OnPlayerChanged;
 		_tokensController.OnRefreshTokensEvent -= OnRefreshTokens;
+		_gameplayController.OnPhaseChangedEvent -= OnPhaseChanged;
 	}
 }
