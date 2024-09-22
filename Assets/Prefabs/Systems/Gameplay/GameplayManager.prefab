@@ -52,4 +52,15 @@ MonoBehaviour:
       _dices: 0
     _currentPlayerIndex: 0
     _currentRound: 0
-    _playerDatas: []
+    _currentTokens: 0
+    _tilesDatas: []
+    _phase:
+      rid: -2
+  _factoryPhaseLookUp:
+  - Phase:
+      rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

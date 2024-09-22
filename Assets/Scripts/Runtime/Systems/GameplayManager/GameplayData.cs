@@ -19,6 +19,9 @@ public class GameplayData
 	[SerializeField]
 	private List<MapTileData> _tilesDatas = new();
 
+	[SerializeReference]
+	private GamePhaseType _phaseType;
+
 	public int CurrentRound
 	{
 		get => _currentRound;
@@ -52,6 +55,15 @@ public class GameplayData
 		set
 		{
 			_tilesDatas = value;
+		}
+	}
+
+	public GamePhaseType PhaseType
+	{
+		get => _phaseType;
+		set
+		{
+			_phaseType = value;
 		}
 	}
 

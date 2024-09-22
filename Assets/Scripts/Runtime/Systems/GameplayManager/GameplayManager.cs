@@ -38,7 +38,13 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 	public void Initialize()
 	{
 		InitializeGameplayData();
-		SetPhase(_settingUpPhaseFactory.Create());
+
+	}
+
+	private void Start()
+	{
+		var phase = GetPhaseBasedOnType(_gameplayData.PhaseType);
+		SetPhaseFromFactory(phase);
 	}
 
 	private void InitializeGameplayData()
@@ -49,17 +55,21 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 		{
 			_gameplayData.CurrentRound = _saveController.GameplayDataFromSave.CurrentRound;
 			_gameplayData.CurrentPlayerIndex = _saveController.GameplayDataFromSave.CurrentPlayerIndex;
+			_gameplayData.TileDatas = _saveController.GameplayDataFromSave.TileDatas;
+			_gameplayData.PhaseType = _saveController.GameplayDataFromSave.PhaseType;
 		}
 	}
 
-	private void SetPhase(IPhase newPhase)
+	private void SetPhaseFromFactory(IPhase newPhase)
 	{
-		if (_currentPhase != null)
+		if (CurrentPhase != null)
 		{
-			_currentPhase.CleanUp();
+			CurrentPhase.CleanUp();
 		}
 
+		_gameplayData.PhaseType = newPhase.PhaseType;
 		_currentPhase = newPhase;
+
 		OnPhaseChangedEvent?.Invoke();
 	}
 
@@ -117,12 +127,22 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 	{
 		if (CurrentPhase.CanBeEnded)
 		{
-			SetPhase(_takingOverPhaseFactory.Create());
+			SetPhaseFromFactory(_takingOverPhaseFactory.Create());
 		}
 	}
 
 	private void HandleEndGame()
 	{
 		OnEndGameEvent?.Invoke();
+	}
+
+	private AbstractPhase GetPhaseBasedOnType(GamePhaseType phaseType)
+	{
+		return phaseType switch
+		{
+			GamePhaseType.SettingUp => _settingUpPhaseFactory.Create(),
+			GamePhaseType.TakingOver => _takingOverPhaseFactory.Create(),
+			_ => null,
+		};
 	}
 }

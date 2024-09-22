@@ -14,6 +14,8 @@ public class SettingUpPhase : AbstractPhase
 	public override bool CanEndTurn => _tokensController.Tokens == 0;
 	public override bool CanBeEnded => true;
 
+	public override GamePhaseType PhaseType => GamePhaseType.SettingUp;
+
 	[Inject]
 	public void Initialize()
 	{

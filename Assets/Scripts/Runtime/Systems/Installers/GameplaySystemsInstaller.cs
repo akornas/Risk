@@ -20,7 +20,5 @@ public class GameplaySystemsInstaller : MonoInstaller
 
 		Container.BindFactory<SettingUpPhase, Factory<SettingUpPhase>>();
 		Container.BindFactory<TakingOverPhase, Factory<TakingOverPhase>>();
-
-
 	}
 }

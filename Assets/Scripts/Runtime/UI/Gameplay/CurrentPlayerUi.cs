@@ -28,7 +28,10 @@ public class CurrentPlayerUi : MonoBehaviour
 
 	private void OnPhaseChanged()
 	{
-		_tokensLabel.gameObject.SetActive(false);
+		if (_gameplayController.CurrentPhase.PhaseType != GamePhaseType.SettingUp)
+		{
+			_tokensLabel.gameObject.SetActive(false);
+		}
 	}
 
 	private void OnRefreshTokens()

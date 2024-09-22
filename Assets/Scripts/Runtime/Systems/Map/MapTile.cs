@@ -1,5 +1,6 @@
 using NaughtyAttributes;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -12,6 +13,9 @@ public class MapTile : MonoBehaviour
 
 	[Inject]
 	private readonly ISettingsController _settingsController;
+
+	[Inject]
+	private readonly IGameplayManager _gameplayManager;
 
 	[SerializeField]
 	private Image _image;
@@ -69,8 +73,21 @@ public class MapTile : MonoBehaviour
 	[Inject]
 	public void Initialize()
 	{
-		Data.Tokens = Random.Range(1, 20);
 		Data.OnDataChangedEvent += OnDataChanged;
+		var savedData = _gameplayManager.GameplayData.TileDatas.FirstOrDefault(tile => tile.Guid == Data.Guid);
+
+		if (savedData != null)
+		{
+			Data.Tokens = savedData.Tokens;
+			Data.OwnerPlayerIndex = savedData.OwnerPlayerIndex;
+			_gameplayManager.GameplayData.TileDatas.Remove(savedData);
+		}
+		else
+		{
+			Data.Tokens = Random.Range(1, 20);
+		}
+
+		_gameplayManager.GameplayData.TileDatas.Add(Data);
 	}
 
 	private void OnDataChanged()

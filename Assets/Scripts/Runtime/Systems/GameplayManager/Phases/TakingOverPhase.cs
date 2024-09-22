@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Zenject;
 
-public class TakingOverPhase : AbstractPhase
+public class TakingOverPhase : AbstractPhase, IInitializable
 {
 	[Inject]
 	private readonly ITakingOverController _takingOverController;
@@ -11,6 +11,8 @@ public class TakingOverPhase : AbstractPhase
 	public override bool CanBeEnded => false;
 
 	public override int Tokens => 0;
+
+	public override GamePhaseType PhaseType => GamePhaseType.TakingOver;
 
 	[Inject]
 	public void Initialize()
