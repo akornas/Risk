@@ -7,6 +7,7 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 	public event System.Action OnPhaseChangedEvent;
 	public event System.Action OnRoundChangedEvent;
 	public event System.Action OnPlayerChangedEvent;
+	public event System.Action<int> OnRemovedPlayerEvent;
 
 	[Inject]
 	private readonly IGameplaySettingsManager _gameplaySettingsManager;
@@ -30,7 +31,7 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 	private GameplayData _gameplayData;
 
 	private IPhase _currentPhase;
-	private List<int> _removedPlayers = new();
+	private readonly List<int> _removedPlayers = new();
 
 	private GameplaySettingsData GameplaySettingsData => _gameplaySettingsManager.GameplaySettingsData;
 	public GameplayData GameplayData => _gameplayData;
@@ -165,6 +166,7 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 		{
 			_logProvider.Log($"Player {index + 1} has been defeated");
 			_removedPlayers.Add(index);
+			OnRemovedPlayerEvent?.Invoke(index);
 		}
 	}
 }

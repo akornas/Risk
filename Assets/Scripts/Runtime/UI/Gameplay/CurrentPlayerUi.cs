@@ -5,7 +5,7 @@ using Zenject;
 public class CurrentPlayerUi : MonoBehaviour
 {
 	[Inject]
-	private readonly IGameplayManager _gameplayController;
+	private readonly IGameplayManager _gameplayManager;
 
 	[Inject]
 	private readonly ITokensController _tokensController;
@@ -22,19 +22,12 @@ public class CurrentPlayerUi : MonoBehaviour
 	[Inject]
 	public void Initialize()
 	{
-		_gameplayController.OnPlayerChangedEvent += OnPlayerChanged;
 		_tokensController.OnRefreshTokensEvent += OnRefreshTokens;
-		_gameplayController.OnPhaseChangedEvent += OnPhaseChanged;
+		_gameplayManager.OnPlayerChangedEvent += OnPlayerChanged;
+		_gameplayManager.OnPhaseChangedEvent += OnPhaseChanged;
+
 		OnPlayerChanged();
 		OnRefreshTokens();
-	}
-
-	private void OnPhaseChanged()
-	{
-		if (_gameplayController.CurrentPhase.PhaseType != GamePhaseType.SettingUp)
-		{
-			_tokensLabel.gameObject.SetActive(false);
-		}
 	}
 
 	private void OnRefreshTokens()
@@ -44,14 +37,22 @@ public class CurrentPlayerUi : MonoBehaviour
 
 	private void OnPlayerChanged()
 	{
-		_playerLabel.color = _settingsController.GetColorForPlayer(_gameplayController.CurrentPlayerIndex);
-		_playerLabel.text = $"{SettingsController.PLAYER_LABEL} {_gameplayController.CurrentPlayerIndex + 1}";
+		_playerLabel.color = _settingsController.GetColorForPlayer(_gameplayManager.CurrentPlayerIndex);
+		_playerLabel.text = $"{SettingsController.PLAYER_LABEL} {_gameplayManager.CurrentPlayerIndex + 1}";
+	}
+
+	private void OnPhaseChanged()
+	{
+		if (_gameplayManager.CurrentPhase.PhaseType != GamePhaseType.SettingUp)
+		{
+			_tokensLabel.gameObject.SetActive(false);
+		}
 	}
 
 	private void OnDestroy()
 	{
-		_gameplayController.OnPlayerChangedEvent -= OnPlayerChanged;
 		_tokensController.OnRefreshTokensEvent -= OnRefreshTokens;
-		_gameplayController.OnPhaseChangedEvent -= OnPhaseChanged;
+		_gameplayManager.OnPlayerChangedEvent -= OnPlayerChanged;
+		_gameplayManager.OnPhaseChangedEvent -= OnPhaseChanged;
 	}
 }

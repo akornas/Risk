@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class LogProvider : MonoBehaviour, ILogProvider
@@ -19,6 +20,7 @@ public class LogProvider : MonoBehaviour, ILogProvider
 	[SerializeField]
 	private float _poolSize = 5;
 
+	private readonly CancellationTokenSource _cancellationToken = new();
 	private readonly Stack<LogUi> _messagePool = new();
 	private readonly Queue<LogUi> _createdMessages = new();
 	private int MessageLifeTimeInMiliseconds => Mathf.RoundToInt(_messageLifeTime * 1000);
@@ -64,9 +66,18 @@ public class LogProvider : MonoBehaviour, ILogProvider
 
 	private async UniTask ReturnLogUiToPoolAfterLifetime()
 	{
-		await UniTask.Delay(MessageLifeTimeInMiliseconds);
-		var message = _createdMessages.Dequeue();
-		message.transform.SetParent(_messagePoolRoot);
-		_messagePool.Push(message);
+		await UniTask.Delay(MessageLifeTimeInMiliseconds, cancellationToken: _cancellationToken.Token).SuppressCancellationThrow();
+
+		if (!_cancellationToken.IsCancellationRequested)
+		{
+			var message = _createdMessages.Dequeue();
+			message.transform.SetParent(_messagePoolRoot);
+			_messagePool.Push(message);
+		}
+	}
+
+	private void OnDestroy()
+	{
+		_cancellationToken.Cancel();
 	}
 }

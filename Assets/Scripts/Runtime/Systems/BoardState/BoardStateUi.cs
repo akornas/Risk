@@ -14,15 +14,17 @@ public class BoardStateUi : MonoBehaviour
 	private TextMeshProUGUI[] _playerLabels;
 
 	[Inject]
-	public void Initialize()
+	public void OnInjected()
 	{
 		BindToEvents();
 		SetupLabels();
+		OnRefreshBoardState();
 	}
 
 	private void BindToEvents()
 	{
 		_boardState.OnRefreshBoardStateEvent += OnRefreshBoardState;
+		_gameplayManager.OnRemovedPlayerEvent += OnRemovedPlayer;
 	}
 
 	private void OnRefreshBoardState()
@@ -47,8 +49,15 @@ public class BoardStateUi : MonoBehaviour
 		}
 	}
 
+	private void OnRemovedPlayer(int index)
+	{
+		_playerLabels[index].text = $"Player {index + 1}";
+	}
+
+
 	private void OnDestroy()
 	{
 		_boardState.OnRefreshBoardStateEvent -= OnRefreshBoardState;
+		_gameplayManager.OnRemovedPlayerEvent -= OnRemovedPlayer;
 	}
 }

@@ -36,6 +36,7 @@ public class SaveController : MonoBehaviour, ISaveController
 
 	public void DeleteSave()
 	{
+		GameplayDataFromSave = null;
 		_saveSystem.DeleteSave();
 	}
 }
