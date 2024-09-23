@@ -1,41 +1,42 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Zenject;
 
 public class MapController : MonoBehaviour, IMapController
 {
 	[Inject]
-	private readonly IGameplayManager _gameplayManager;
+	private readonly IEndGame _endGameManager;
 
 	public event Action<MapTile> OnTileSelectedEvent;
 	public event Action<MapTile> OnTileDeselectedEvent;
 	public event Action<MapTile> OnTileClickedEvent;
+	public event Action OnSetActiveEvent;
 
 	private readonly List<MapTile> _tiles = new();
+	private bool _isActive;
 
 	public List<MapTile> Tiles => _tiles;
+
+	public bool IsActive
+	{
+		get;
+		private set;
+	}
 
 	[Inject]
 	public void Initialize()
 	{
 		CollectTiles();
 		BindToCollectedTiles();
+		_endGameManager.OnEndGameEvent += OnEndGame;
+		IsActive = true;
+		OnSetActiveEvent?.Invoke();
 	}
 
-	private void OnGameplayDataInitialized()
+	private void OnEndGame()
 	{
-		var tileDatas = _gameplayManager.GameplayData.TileDatas;
-
-		foreach (var tile in _tiles)
-		{
-			var savedData = tileDatas.FirstOrDefault(savedTile => savedTile.Guid == tile.Data.Guid);
-			if (savedData != null)
-			{
-				tile.Data.SetData(savedData);
-			}
-		}
+		IsActive = false;
 	}
 
 	private void CollectTiles()
@@ -72,11 +73,6 @@ public class MapController : MonoBehaviour, IMapController
 		OnTileClickedEvent?.Invoke(tile);
 	}
 
-	private void OnDestroy()
-	{
-		UnbindFromTiles();
-	}
-
 	private void UnbindFromTiles()
 	{
 		foreach (var tile in _tiles)
@@ -85,5 +81,11 @@ public class MapController : MonoBehaviour, IMapController
 			tile.OnDeselectedEvent -= OnTileDeselected;
 			tile.OnClickEvent -= OnTileClicked;
 		}
+	}
+
+	public void OnDestroy()
+	{
+		_endGameManager.OnEndGameEvent -= OnEndGame;
+		UnbindFromTiles();
 	}
 }

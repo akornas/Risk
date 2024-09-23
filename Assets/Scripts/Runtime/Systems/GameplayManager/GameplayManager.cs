@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -6,7 +7,6 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 	public event System.Action OnPhaseChangedEvent;
 	public event System.Action OnRoundChangedEvent;
 	public event System.Action OnPlayerChangedEvent;
-	public event System.Action OnEndGameEvent;
 
 	[Inject]
 	private readonly IGameplaySettingsManager _gameplaySettingsManager;
@@ -23,10 +23,14 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 	[Inject]
 	private readonly ILogProvider _logProvider;
 
+	[Inject]
+	private readonly IEndGame _endGameManager;
+
 	[SerializeField]
 	private GameplayData _gameplayData;
 
 	private IPhase _currentPhase;
+	private List<int> _removedPlayers = new();
 
 	private GameplaySettingsData GameplaySettingsData => _gameplaySettingsManager.GameplaySettingsData;
 	public GameplayData GameplayData => _gameplayData;
@@ -51,6 +55,11 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 	{
 		_gameplayData = new GameplayData(GameplaySettingsData);
 
+		TryLoadDataFromSave();
+	}
+
+	private void TryLoadDataFromSave()
+	{
 		if (_saveController.GameplayDataFromSave != null)
 		{
 			_gameplayData.CurrentRound = _saveController.GameplayDataFromSave.CurrentRound;
@@ -75,8 +84,7 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 
 	public void EndTurn()
 	{
-		bool shouldChangeRound = false;
-		HandleCurrentPlayer(ref shouldChangeRound);
+		SetNextPlayer(out bool shouldChangeRound);
 
 		if (shouldChangeRound)
 		{
@@ -85,22 +93,27 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 		_ = _saveController.SaveData(_gameplayData);
 	}
 
-	private void HandleCurrentPlayer(ref bool shouldChangeRound)
+	private void SetNextPlayer(out bool shouldChangeRound)
 	{
-		shouldChangeRound = SetNextPlayer();
+		IterateCurrentPlayer(out shouldChangeRound);
 	}
 
-	private bool SetNextPlayer()
+	private void IterateCurrentPlayer(out bool isReturningFirstPlayer)
 	{
-		_gameplayData.CurrentPlayerIndex++;
+		isReturningFirstPlayer = false;
 
-		if (_gameplayData.CurrentPlayerIndex > GameplaySettingsData.Players - 1)
+		do
 		{
-			_gameplayData.CurrentPlayerIndex = 0;
-		}
+			_gameplayData.CurrentPlayerIndex++;
+
+			if (_gameplayData.CurrentPlayerIndex > GameplaySettingsData.Players - 1)
+			{
+				_gameplayData.CurrentPlayerIndex = 0;
+				isReturningFirstPlayer = true;
+			}
+		} while (_removedPlayers.Contains(_gameplayData.CurrentPlayerIndex));
 
 		OnPlayerChangedEvent?.Invoke();
-		return _gameplayData.CurrentPlayerIndex == 0;
 	}
 
 	private void HandleChangingRound()
@@ -133,7 +146,7 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 
 	private void HandleEndGame()
 	{
-		OnEndGameEvent?.Invoke();
+		_endGameManager.HandleEndOfRounds();
 	}
 
 	private AbstractPhase GetPhaseBasedOnType(GamePhaseType phaseType)
@@ -144,5 +157,14 @@ public class GameplayManager : MonoBehaviour, IGameplayManager
 			GamePhaseType.TakingOver => _takingOverPhaseFactory.Create(),
 			_ => null,
 		};
+	}
+
+	public void RemovePlayer(int index)
+	{
+		if (!_removedPlayers.Contains(index))
+		{
+			_logProvider.Log($"Player {index + 1} has been defeated");
+			_removedPlayers.Add(index);
+		}
 	}
 }

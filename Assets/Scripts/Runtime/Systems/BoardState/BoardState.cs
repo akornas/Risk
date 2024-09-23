@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using Zenject;
 
-public class BoardState : IBoardState
+public class BoardState : IBoardState, IDisposable
 {
 	public event System.Action OnRefreshBoardStateEvent;
 
@@ -13,7 +14,12 @@ public class BoardState : IBoardState
 	public Dictionary<int, int> PlayersStates => _playersStates;
 
 	[Inject]
-	public void Initialize()
+	public void OnInjected()
+	{
+		_mapController.OnSetActiveEvent += OnSetActiveMapController;
+	}
+
+	private void OnSetActiveMapController()
 	{
 		foreach (var tile in _mapController.Tiles)
 		{
@@ -49,5 +55,10 @@ public class BoardState : IBoardState
 		}
 
 		OnRefreshBoardStateEvent?.Invoke();
+	}
+
+	public void Dispose()
+	{
+		_mapController.OnSetActiveEvent -= OnSetActiveMapController;
 	}
 }

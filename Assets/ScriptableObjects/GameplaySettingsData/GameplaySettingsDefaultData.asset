@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _minimalRange:
     _players: 2
-    _rounds: -1
+    _rounds: 1
     _tokens: 1
     _dices: 2
   _maximalRange:

@@ -15,7 +15,6 @@ public class WinLoseProvider : IWinLoseProvider
 	private int AttackerTokens => _attackerTile.Data.Tokens;
 	private int DefenderTokens => _defenderTile.Data.Tokens;
 
-
 	public void Initialize(MapTile attackerTile, MapTile defenderTile)
 	{
 		_attackerTile = attackerTile;
@@ -30,8 +29,6 @@ public class WinLoseProvider : IWinLoseProvider
 	public void HandleAttack()
 	{
 		var winChance = GetWinChance();
-		_logProvider.Log($"Player {_attackerTile.Data.OwnerPlayerIndex} attacked Player {_defenderTile.Data.OwnerPlayerIndex} with {winChance}% win chance");
-
 		var dicesCount = _gameplayManager.GameplayData.GameplaySettingsData.Dices;
 		int winCounter = 0;
 
@@ -53,7 +50,6 @@ public class WinLoseProvider : IWinLoseProvider
 			HandleLose();
 		}
 	}
-
 
 	private void HandleWin()
 	{

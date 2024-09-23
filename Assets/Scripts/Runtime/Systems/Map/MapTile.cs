@@ -17,6 +17,9 @@ public class MapTile : MonoBehaviour
 	[Inject]
 	private readonly IGameplayManager _gameplayManager;
 
+	[Inject]
+	private readonly IMapController _mapController;
+
 	[SerializeField]
 	private Image _image;
 
@@ -97,16 +100,31 @@ public class MapTile : MonoBehaviour
 
 	public void Select()
 	{
+		if (!_mapController.IsActive)
+		{
+			return;
+		}
+
 		OnSelectedEvent?.Invoke(this);
 	}
 
 	public void Deselect()
 	{
+		if (!_mapController.IsActive)
+		{
+			return;
+		}
+
 		OnDeselectedEvent?.Invoke(this);
 	}
 
 	public void Click()
 	{
+		if (!_mapController.IsActive)
+		{
+			return;
+		}
+
 		OnClickEvent?.Invoke(this);
 	}
 

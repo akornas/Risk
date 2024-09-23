@@ -3,10 +3,9 @@
 	event System.Action OnPhaseChangedEvent;
 	event System.Action OnRoundChangedEvent;
 	event System.Action OnPlayerChangedEvent;
-	event System.Action OnEndGameEvent;
-
 	void EndTurn();
-	public GameplayData GameplayData { get; }
+	GameplayData GameplayData { get; }
+	void RemovePlayer(int index);
 	int CurrentRound { get; }
 	int CurrentPlayerIndex { get; }
 	IPhase CurrentPhase { get; }

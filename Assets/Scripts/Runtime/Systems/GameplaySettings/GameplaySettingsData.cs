@@ -8,7 +8,7 @@ public class GameplaySettingsData
 	private int _players;
 
 	[SerializeField]
-	[Range(-1, 100)]
+	[Range(1, 100)]
 	private int _rounds = -1;
 
 	[SerializeField]

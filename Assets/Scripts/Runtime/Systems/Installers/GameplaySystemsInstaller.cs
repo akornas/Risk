@@ -17,6 +17,7 @@ public class GameplaySystemsInstaller : MonoInstaller
 		Container.Bind<ITakingOverController>().To<TakingOverController>().AsSingle();
 		Container.Bind<IWinLoseProvider>().To<WinLoseProvider>().AsSingle();
 		Container.Bind<IBoardState>().To<BoardState>().AsSingle();
+		Container.Bind<IEndGame>().To<EndGameManager>().AsSingle();
 
 		Container.BindFactory<SettingUpPhase, Factory<SettingUpPhase>>();
 		Container.BindFactory<TakingOverPhase, Factory<TakingOverPhase>>();
