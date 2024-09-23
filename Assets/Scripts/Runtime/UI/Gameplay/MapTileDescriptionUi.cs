@@ -28,6 +28,8 @@ public class MapTileDescriptionUi : MonoBehaviour
 
 	private MapTile _lastSelectedTile;
 
+	private int _selectedCount = 0;
+
 	[Inject]
 	public void Initialize()
 	{
@@ -46,22 +48,23 @@ public class MapTileDescriptionUi : MonoBehaviour
 
 	private void OnTileSelected(MapTile tile)
 	{
+		_selectedCount++;
 		_lastSelectedTile = tile;
 
-		if (tile.Data.OwnerPlayerIndex != -1)
-		{
-			_root.SetActive(true);
-			_playerLabel.text = $"{SettingsController.PLAYER_LABEL} {tile.Data.OwnerPlayerIndex + 1}";
-			_tokensLabel.text = $"{tile.Data.Tokens}";
-			_flagImage.color = _settingsController.GetColorForPlayer(tile.Data.OwnerPlayerIndex);
-		}
+		_root.SetActive(true);
+		_playerLabel.gameObject.SetActive(tile.Data.OwnerPlayerIndex != -1);
+		_playerLabel.text = $"{SettingsController.PLAYER_LABEL} {tile.Data.OwnerPlayerIndex + 1}";
+		_tokensLabel.text = $"{tile.Data.Tokens}";
+		_flagImage.color = _settingsController.GetColorForPlayer(tile.Data.OwnerPlayerIndex);
 	}
 
 	private void OnTileDeselected(MapTile tile)
 	{
+		_selectedCount--;
+
 		if (_root.activeInHierarchy)
 		{
-			_root.SetActive(false);
+			_root.SetActive(_selectedCount == 0);
 		}
 	}
 

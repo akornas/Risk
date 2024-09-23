@@ -100,7 +100,7 @@ public class TakingOverController : ITakingOverController
 
 	private void HandleSelectingDefenderrTile(MapTile tile)
 	{
-		if (tile.Data.OwnerPlayerIndex != _gameplayManager.CurrentPlayerIndex && _selectedAttackerTile.IsTileInNeighbour(tile))
+		if (CanSelectDefenderTile(tile))
 		{
 			_selectedDefenderTile = tile;
 			_winLoseProvider.Initialize(_selectedAttackerTile, _selectedDefenderTile);
@@ -110,6 +110,13 @@ public class TakingOverController : ITakingOverController
 		{
 			_logProvider.Log("You cannot attack that tile");
 		}
+	}
+
+	private bool CanSelectDefenderTile(MapTile tile)
+	{
+		return tile.Data.OwnerPlayerIndex != _gameplayManager.CurrentPlayerIndex
+			&& (_selectedAttackerTile.IsTileInNeighbour(tile)
+			|| tile.HasAnyNeighbourFromPlayer(_selectedAttackerTile.Data.OwnerPlayerIndex));
 	}
 
 	private void CalculatePercentage()

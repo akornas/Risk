@@ -10,6 +10,9 @@ public class CurrentPlayerUi : MonoBehaviour
 	[Inject]
 	private readonly ITokensController _tokensController;
 
+	[Inject]
+	private readonly ISettingsController _settingsController;
+
 	[SerializeField]
 	private TextMeshProUGUI _playerLabel;
 
@@ -41,6 +44,7 @@ public class CurrentPlayerUi : MonoBehaviour
 
 	private void OnPlayerChanged()
 	{
+		_playerLabel.color = _settingsController.GetColorForPlayer(_gameplayController.CurrentPlayerIndex);
 		_playerLabel.text = $"{SettingsController.PLAYER_LABEL} {_gameplayController.CurrentPlayerIndex + 1}";
 	}
 

@@ -12,7 +12,11 @@ public class EndGameManager : IEndGame, IDisposable
 	[Inject]
 	private readonly IGameplayManager _gameplayManager;
 
-	public int LastPlayerIndex { get; private set; }
+	public int LastPlayerIndex =>
+		_boardState.PlayersStates
+				.Where(x => x.Key > -1 && x.Value > 0)
+				.OrderByDescending(x => x.Value)
+				.First().Key;
 
 	[Inject]
 	public void OnInjected()
@@ -35,7 +39,6 @@ public class EndGameManager : IEndGame, IDisposable
 	{
 		if (_boardState.PlayersStates.Where(x => x.Key > -1 && x.Value > 0).Count() == 1)
 		{
-			LastPlayerIndex = _boardState.PlayersStates.Where(x => x.Key > -1 && x.Value > 0).First().Key;
 			EndGame();
 		}
 	}

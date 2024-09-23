@@ -137,4 +137,17 @@ public class MapTile : MonoBehaviour
 	{
 		return _neighbourTiles.Contains(otherTile);
 	}
+
+	public bool HasAnyNeighbourFromPlayer(int playerIndex)
+	{
+		foreach (var tile in _neighbourTiles)
+		{
+			if (tile.Data.OwnerPlayerIndex == playerIndex)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 }
