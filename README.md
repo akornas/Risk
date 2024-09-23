@@ -1,6 +1,7 @@
 **Almost Risk** 
 
-![image](https://github.com/user-attachments/assets/c81c241f-c2dd-4f02-a361-9fa37daa7af5)
+![Animation](https://github.com/user-attachments/assets/69bca3cf-04d3-4793-a610-2e2028508150)
+
 
 It's simple implementation of board game called risk but with my own rules. It's created in unity and based on Zenject plugin. Game supports up to 4 local players, has flexible, expandable code and has a few customizable settings.
 Has a autosave feature after every round stored in local files.  
@@ -9,10 +10,11 @@ Has a autosave feature after every round stored in local files.
 
 **Features:**
 
-![image](https://github.com/user-attachments/assets/184d1744-fd0d-4db4-b47b-95230361ab0a)
+![settings](https://github.com/user-attachments/assets/ff34a841-a8d0-4280-aa39-d1a9b83985ac)
+
 - 2 - 4 - local players
 - Customizable rules 
-- Save system
+- Save system (with option to implementation for each platform)
   
 
 
