@@ -91,7 +91,19 @@ public class TokensController : ITokensController
 		}
 		else
 		{
+			HandleError();
+		}
+	}
+
+	private void HandleError()
+	{
+		if (!CanTakeTile())
+		{
 			_logProvider.Log($"You can take only {_gameplayManager.CurrentPhase.TilesLimit} fields in this phase.");
+		}
+		else
+		{
+			_logProvider.Log($"You can't take other player field in this phase.");
 		}
 	}
 

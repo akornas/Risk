@@ -59,10 +59,14 @@ public class WinLoseProvider : IWinLoseProvider
 		_attackerTile.Data.Tokens = tokensOnAttackerTile;
 		_defenderTile.Data.Tokens = tokensOnDefenderTile;
 		_defenderTile.Data.OwnerPlayerIndex = _attackerTile.Data.OwnerPlayerIndex;
+
+		_logProvider.Log($"Player {_attackerTile.Data.OwnerPlayerIndex + 1} won {tokensOnDefenderTile} tokens");
 	}
 
 	private void HandleLose()
 	{
+		_logProvider.Log($"Player {_attackerTile.Data.OwnerPlayerIndex + 1} lost");
+
 		var tokensOnAttackerTile = (int)MathF.Ceiling(_attackerTile.Data.Tokens / 2f);
 		var tokensOnDefenderTile = _defenderTile.Data.Tokens;
 

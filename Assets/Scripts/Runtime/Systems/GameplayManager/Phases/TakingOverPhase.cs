@@ -1,10 +1,12 @@
-﻿using UnityEngine;
-using Zenject;
+﻿using Zenject;
 
 public class TakingOverPhase : AbstractPhase, IInitializable
 {
 	[Inject]
 	private readonly ITakingOverController _takingOverController;
+
+	[Inject]
+	private readonly ILogProvider _logProvider;
 
 	public override int TilesLimit => 1;
 	public override bool CanEndTurn => _takingOverController.IsAfterAttack;
@@ -22,7 +24,7 @@ public class TakingOverPhase : AbstractPhase, IInitializable
 
 	public override void NotifyWhyCanNotEndTurn()
 	{
-		Debug.Log("You have to attack at least once");
+		_logProvider.Log("You have to attack first");
 	}
 
 	public override void CleanUp()

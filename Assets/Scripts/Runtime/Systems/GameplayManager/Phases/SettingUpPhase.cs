@@ -1,4 +1,3 @@
-using UnityEngine;
 using Zenject;
 
 public class SettingUpPhase : AbstractPhase
@@ -8,6 +7,9 @@ public class SettingUpPhase : AbstractPhase
 
 	[Inject]
 	private readonly ITokensController _tokensController;
+
+	[Inject]
+	private readonly ILogProvider _logProvider;
 
 	public override int TilesLimit => 2;
 	public override int Tokens => _gameplayManager.GameplayData.GameplaySettingsData.Tokens;
@@ -24,7 +26,7 @@ public class SettingUpPhase : AbstractPhase
 
 	public override void NotifyWhyCanNotEndTurn()
 	{
-		Debug.Log("You have to lay out all the tokens");
+		_logProvider.Log("You have to lay out all the tokens");
 	}
 
 	public override void CleanUp()

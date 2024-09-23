@@ -1,7 +1,9 @@
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
+using Zenject;
 
 public class LogProvider : MonoBehaviour, ILogProvider
 {
@@ -19,6 +21,12 @@ public class LogProvider : MonoBehaviour, ILogProvider
 
 	[SerializeField]
 	private float _poolSize = 5;
+
+	[Inject]
+	private readonly IGameplayManager _gameplayManager;
+
+	[Inject]
+	private readonly ISettingsController _settingsController;
 
 	private readonly CancellationTokenSource _cancellationToken = new();
 	private readonly Stack<LogUi> _messagePool = new();
@@ -47,7 +55,7 @@ public class LogProvider : MonoBehaviour, ILogProvider
 	public void Log(string message)
 	{
 		var logUiFromPool = GetLogUiFromPool();
-
+		message = $"{GetPrefixColorForCurrentMessage()}{message}</color>";
 		logUiFromPool.Initialize(message);
 		logUiFromPool.transform.SetParent(_root);
 		_createdMessages.Enqueue(logUiFromPool);
@@ -62,6 +70,11 @@ public class LogProvider : MonoBehaviour, ILogProvider
 		}
 
 		return _messagePool.Pop();
+	}
+
+	private string GetPrefixColorForCurrentMessage()
+	{
+		return $"<color=#{_settingsController.GetColorForPlayer(_gameplayManager.CurrentPlayerIndex).ToHexString()}>";
 	}
 
 	private async UniTask ReturnLogUiToPoolAfterLifetime()
