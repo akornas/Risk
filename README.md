@@ -20,9 +20,9 @@ Has a autosave feature after every round stored in local files.
 - Unity 2022.3.27f
 
 **Plugins:**
-- UniTask
-- NaughtyAttributes
-- Zenject
+- UniTask - Better async/await unity integration - https://github.com/Cysharp/UniTask
+- NaughtyAttributes - Extension for the Unity Inspector - https://github.com/dbrizov/NaughtyAttributes
+- Zenject - Dependency Injection for unity - https://github.com/modesttree/Zenject
 
 **Assets:**
 - Font - Ringbearer - https://font.download/font/ringbearer
