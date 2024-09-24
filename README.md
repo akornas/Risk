@@ -3,8 +3,7 @@
 ![Animation](https://github.com/user-attachments/assets/69bca3cf-04d3-4793-a610-2e2028508150)
 
 
-It's simple implementation of board game called risk but with my own rules. It's created in unity and based on Zenject plugin. Game supports up to 4 local players, has flexible, expandable code and has a few customizable settings.
-Has a autosave feature after every round stored in local files.  
+This is a simple implementation of the board game Risk, featuring my own set of rules. The game is developed in Unity and utilizes the Zenject plugin for dependency injection. It supports up to four local players and boasts a flexible, expandable codebase with various customizable settings. Additionally, it includes an autosave feature that stores the game state in local files after each round. 
 
 
 
